@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+
+
+def androidConfig = rootProject.ext.androidConfig
+android {
+    compileSdkVersion androidConfig.compileSdkVersion
+
+
+    defaultConfig {
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
+        versionCode androidConfig.versionCode
+        versionName androidConfig.versionName
+        buildConfigField("boolean","isRelease",String.valueOf(isRelease))
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+
+        debug{
+
+
+
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    rootProject.ext.commonSupport.each{ k,v -> api v}
+//    annotationProcessor project(':compiler')
+    api project(':annotation')
+
+}

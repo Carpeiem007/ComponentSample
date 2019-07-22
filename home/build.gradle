@@ -1,0 +1,64 @@
+if (isRelease)
+    apply plugin: 'com.android.library'
+else
+    apply plugin: 'com.android.application'
+
+
+
+android {
+    compileSdkVersion androidConfig.compileSdkVersion
+    defaultConfig {
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
+        versionCode androidConfig.versionCode
+        versionName androidConfig.versionName
+        buildConfigField("boolean","isRelease",String.valueOf(isRelease))
+        buildConfigField("String","moduleName","\"${componentHome}\"")
+        if (!isRelease)
+            applicationId "com.gg.home"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [package_path_for_APT : String.valueOf(componentPackageLib),
+                             module_name:String.valueOf(componentHome)]
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets{
+        main(){
+            if(!isRelease){
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            }  else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    exclude '**/debug/**'
+                }
+            }
+
+        }
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //if (!rootProject.ext.isRelease)
+    implementation project(path: ':common')
+    rootProject.ext.homeSupport.each{
+        k ,v -> implementation v
+    }
+    annotationProcessor project(':compiler')
+
+}

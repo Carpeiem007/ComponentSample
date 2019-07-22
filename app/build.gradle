@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+def androidConfig = rootProject.ext.androidConfig
+
+android {
+    compileSdkVersion androidConfig.compileSdkVersion
+    defaultConfig {
+        applicationId "com.gg.componentsample"
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
+        versionCode androidConfig.appCode
+        versionName androidConfig.appVersion
+
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    if(rootProject.ext.isRelease){
+        implementation project(path:':home')
+        implementation project(path: ':my')
+    }
+    implementation project(path: ':common')
+
+}

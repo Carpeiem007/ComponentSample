@@ -1,0 +1,39 @@
+ext {
+    //组件化开关  isRelease为true 所有的子包变为library 为false 所有的子包均可以独立运行
+    isRelease = true
+
+    //子包名称
+    componentMy = 'My'
+    componentHome = 'Home'
+
+    componentPackageLib = 'com.componment.route'
+
+    androidConfig = [
+            compileSdkVersion: 28,
+            minSdkVersion    : 15,
+            targetSdkVersion : 28,
+            appCode          : 1,
+            appVersion       : "1.1.0"
+    ]
+
+
+
+
+    supportLibVer = "28.0.0"
+
+    commonSupport = [
+            appcompat : "com.android.support:appcompat-v7:${supportLibVer}",
+            constraint: 'com.android.support.constraint:constraint-layout:1.1.3'
+    ]
+
+    homeSupport = [
+            picasso :  'com.squareup.picasso:picasso:2.5.1'
+
+    ]
+
+
+
+
+
+
+}
